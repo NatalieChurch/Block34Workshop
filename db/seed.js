@@ -7,7 +7,7 @@ await db.end();
 console.log("🌱 Database seeded.");
 
 async function seedEmployees() {
-  await client.connect()
+  await db.connect()
 
   await createEmployee("Henry Goldblum", '2000-02-30', 120000)
   await createEmployee("Jefferson White", '1000-01-20', 1000)  
@@ -22,7 +22,7 @@ async function seedEmployees() {
   await createEmployee("Hope Uwell", '2013-01-26', 20000)
   await createEmployee("Good Bye", '2014-04-03', 10000)
 
-  await client.end()
+  await db.end()
 }
 
 seedEmployees()
