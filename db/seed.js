@@ -1,15 +1,19 @@
 import db from "#db/client";
-import { createEmployee } from "./queries/employees";
+import { createEmployee } from "./queries/employees.js";
 
-await db.connect();
-await seedEmployees();
-await db.end();
-console.log("🌱 Database seeded.");
+import dotenv from "dotenv";
+dotenv.config();
+
+
+// await db.connect();
+// await seedEmployees();
+// await db.end();
+// console.log("🌱 Database seeded.");
 
 async function seedEmployees() {
   await db.connect()
 
-  await createEmployee("Henry Goldblum", '2000-02-30', 120000)
+  await createEmployee("Henry Goldblum", '2000-02-28', 120000)
   await createEmployee("Jefferson White", '1000-01-20', 1000)  
   await createEmployee("Goofy MaGee", '2005-05-24', 20000)
   await createEmployee("Laura Bailey", '2006-02-19', 80000)
@@ -22,7 +26,8 @@ async function seedEmployees() {
   await createEmployee("Hope Uwell", '2013-01-26', 20000)
   await createEmployee("Good Bye", '2014-04-03', 10000)
 
-  await db.end()
+  await db.end();
+  console.log("🌱 Database seeded.");
 }
 
-seedEmployees()
+seedEmployees();
