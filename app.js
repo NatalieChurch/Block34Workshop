@@ -3,21 +3,11 @@ const app = express();
 export default app;
 import employeesRouter from "./api/employees.js"
 
-// TODO: this file!
+app.use(express.json());
 
+app.use("/employees", employeesRouter)
 
-
-// import express from "express";
-// const app = express();
-// export default app;
-// import moviesRouter from "./api/movies.js"
-
-// app.use(express.json());
-
-// // Below: route /movies to movies router
-// app.use("/movies", moviesRouter)
-
-// app.use((err, req, res, next) => {
-//   console.error(err);
-//   res.status(500).send("Sorry! Something went wrong :(");
-// });
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send("Sorry! Something went wrong :(");
+});
