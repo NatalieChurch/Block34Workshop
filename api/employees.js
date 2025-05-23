@@ -96,7 +96,7 @@ router.route("/employees/:id").put(async (req, res) => {
 
 
   const updatedEmp = await updateEmployee({id, name, birthday, salary})
-
+console.log(updatedEmp)
 if (!updatedEmp){
   return res.status(404).send({error: "Employee not found"});
 }

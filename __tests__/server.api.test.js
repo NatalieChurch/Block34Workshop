@@ -117,6 +117,7 @@ describe("PUT /employees/:id", () => {
   it("updates and sends the employee", async () => {
     db.query.mockResolvedValue({ rows: [mockEmployee] });
     const response = await request(app).put("/employees/1").send(mockEmployee);
+    console.log(response.body, mockEmployee)
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockEmployee);
   });
