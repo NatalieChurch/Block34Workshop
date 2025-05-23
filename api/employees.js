@@ -1,97 +1,106 @@
 import express from "express";
 const router = express.Router();
 export default router;
-
-// TODO: this file!
-
-// import express from "express";
-// const router = express.Router();
-// export default router;
-// import { createMovie, deleteMovie, getMovie, getMovies, updateMovie } from "#db/queries/movies";
+import { createEmployee, deleteEmployee, getEmployee, getEmployees, updateEmployee, updateEmployees } from "#db/queries/employees";
 
 
-
-// router.route("/").get(async (req, res) => {
-//   const movies = await getMovies();
-//   res.send(movies);
-// });
+router.route("/").get(async (req, res) => {
+  res.send("Welcome to the Fullstack Employees API.")
+})
 
 
 
-// router.route("/").post(async (req, res) => {
-//   if(!req.body){
-//     return res.status(400).send({error: "Missing req.body"})
-//   }
+router.route("/employees").get(async (req, res) => {
+  const employees = await getEmployees();
+  res.send(employees);
+});
+
+
+
+router.route("/employees").post(async (req, res) => {
+  if(!req.body){
+    return res.status(400).send({error: "Missing request body"})
+  }
   
-//   const {name, releaseDate, runningTime} = req.body
+  const {name, birthday, salary} = req.body
 
-//   if(!name || !releaseDate || !runningTime){
-//     return res.status(400).send({error: "Missing required params"})
-//   }
+  if(!name || !birthday || !salary){
+    return res.status(400).send({error: "Missing required params"})
+  }
 
-//   const movie = await createMovie({name, releaseDate, runningTime})
+  const employee = await createEmployee({name, birthday, salary})
   
-//   res.status(201).send(movie)
-// })
+  res.status(201).send(employee)
+})
 
 
 
-// router.route("/:id").get(async (req, res) => {
-//   const id = req.params.id
+router.route("/employees/:id").get(async (req, res) => {
+  const id = Number(req.params.id)
 
-//   if(!Number.isInteger(id) && !id >= 0){
-//     return res.status(400).send({error: "Please send a valid number"})
-//   }
+  if(!Number.isInteger(id) || id < 0){
+    return res.status(400).send({error: "Please send a positive number"})
+  }
 
-//   const movie = await getMovie(id)
-//   if(!movie){
-//     return res.status(404).send({error: "ID not found"})
-//   }
+  const employee = await getEmployee(id)
+  if(!employee){
+    return res.status(404).send({error: "Employee does not exist"})
+  }
 
-//   res.send(movie)
-// })
-
-
-
-// router.route("/:id").delete(async (req, res) => {
-//   const id = req.params.id
-
-//   if(!Number.isInteger(id) && id < 0){
-//     return res.status(400).send({error: "Please send a valid number"})
-//   }
-
-//   const deleteM = await deleteMovie(id)
-//   if(!deleteM){
-//     res.status(404).send({error: "Movie not found"})
-//   }
-
-//   res.sendStatus(204)
-// })
+  res.send(employee)
+})
 
 
 
-// router.route("/:id").put(async (req, res) => {
-//   const id = req.params.id
-//   if(!req.body){
-//     return res.status(400).send({error: "Please send us information"})
-//   }
+router.route("/employees/:id").delete(async (req, res) => {
+  const id = Number(req.params.id)
 
-//   const {name, releaseDate, runningTime} = req.body
-//   if(!name || !releaseDate || !runningTime){
-//     // dont need to put id above because it's already coming in as a parameter
-//     return res.status(400).send({error: "Missing required params"})
-//   }
+  if(!Number.isInteger(id) || id < 0){
+    return res.status(400).send({error: "Please send a positive number"})
+  }
+
+  const employee = await getEmployee(id)
+  if(!employee){
+    return res.status(404).send({error: "Employee does not exist"})
+  }
+
+  const deleteEmp = await deleteEmployee(id)
+  if(!deleteEmp){
+    return res.status(404).send({error: "Employee not found"})
+  }
+
+  return res.sendStatus(204)
+})
+
+
+
+router.route("/employees/:id").put(async (req, res) => {
+  const id = Number(req.params.id)
+  if(!req.body){
+    return res.status(400).send({error: "Please enter the required information"})
+  }
+
+  const {name, birthday, salary} = req.body
+  if(!name || !birthday || !salary){
+    return res.status(400).send({error: "Missing required params"})
+  }
   
-//   if(!Number.isInteger(id) && id < 0){
-//     return res.status(400).send({error: "Fix your ID please"})
-//   }
+  if(!Number.isInteger(id) || id < 0){
+    return res.status(400).send({error: "Please make sure the ID is a positive number"})
+  }
 
-//   const movie = await getMovie(id)
-//   if(!movie){
-//     return res.status(404).send({error: "Movie not found"})
-//   }
+  // const employee = await getEmployee(id)
+  // if(!employee){
+  //   return res.status(404).send({error: "Employee not found"})
+  // }
 
-//   const updated = await updateMovie({id, name, releaseDate, runningTime})
-//   res.send(updated)
-// })
+
+  const updatedEmp = await updateEmployee({id, name, birthday, salary})
+
+if (!updatedEmp){
+  return res.status(404).send({error: "Employee not found"});
+}
+
+  return res.status(200).send(updatedEmp);
+});
 
